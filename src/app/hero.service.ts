@@ -13,7 +13,6 @@ export class HeroService {
   constructor(private messageService: MessageService) { }
 
   getHeroes(): Observable<Hero[]> {
-    //this.messageService.addMessage('Your Heroes were fetched, my lord');
     return of(HEROES);
   }
 
@@ -21,7 +20,6 @@ export class HeroService {
     const idNumber = Number(id);
 
     if (!Number.isNaN(idNumber)) {
-      console.log(idNumber);
       return of(HEROES.find(hero => hero.id === idNumber));
     } else {
       return of(new Error('ID must be a Number'));;

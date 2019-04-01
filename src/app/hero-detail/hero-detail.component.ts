@@ -35,5 +35,9 @@ export class HeroDetailComponent implements OnInit {
       this.hero = data;
     })
   }
+  
+  goBack(): void {
+    this.location.back();
+  }
 
 }
