@@ -52,12 +52,28 @@ export class HeroService {
 
   updateHero(hero: Hero): Observable<any> {
     const httpOptions = {
-      headers: new HttpHeaders({'Content-Type': 'application/json'})
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     }
 
     return this.http.put(this.heroesUrl, hero, httpOptions).pipe(
       tap(() => this.log(`Hero updated with id=${hero.id}`)),
       catchError(this.handleError<any>('updateHero'))
     );
+  }
+
+  addHero(name: string): Observable<Hero> {
+    let newHero: Hero = {
+      id: 0,
+      name: ""
+    };
+
+    this.http.get<Hero[]>(this.heroesUrl)
+      .subscribe(heroes => {
+        const heroIds = heroes.map(hero => hero.id);
+        newHero.id  = Math.max(...heroIds) + 1;
+        newHero.name = name;
+      })
+
+    return of(newHero)
   }
 }
