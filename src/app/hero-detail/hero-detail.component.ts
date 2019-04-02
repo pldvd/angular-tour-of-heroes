@@ -27,7 +27,7 @@ export class HeroDetailComponent implements OnInit {
 
     //this.messageService.addMessage(`HeroService: fetched hero id=${id}`);
 
-    this.heroService.getHeroWithId(id).subscribe(data => {
+    this.heroService.getHeroWithId(+id).subscribe(data => {
       if (data instanceof Error) {
         this.error = `Error: ${data.message}`;
         return;
@@ -35,9 +35,14 @@ export class HeroDetailComponent implements OnInit {
       this.hero = data;
     })
   }
-  
+
   goBack(): void {
     this.location.back();
+  }
+
+  save(): void {
+    this.heroService.updateHero(this.hero)
+      .subscribe(() => this.goBack())
   }
 
 }
