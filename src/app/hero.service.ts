@@ -70,10 +70,24 @@ export class HeroService {
     this.http.get<Hero[]>(this.heroesUrl)
       .subscribe(heroes => {
         const heroIds = heroes.map(hero => hero.id);
-        newHero.id  = Math.max(...heroIds) + 1;
+        newHero.id = Math.max(...heroIds) + 1;
         newHero.name = name;
       })
 
     return of(newHero)
+  }
+
+  deleteHero(hero: Hero | number): Observable<Hero> {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    }
+    const id = typeof hero === 'number' ? hero : hero.id;
+    const url = `${this.heroesUrl}/${id}`;
+
+    return this.http.delete<Hero>(url, httpOptions).pipe(
+      tap(_ => this.log(`deleted hero id=${id}`)),
+      catchError(this.handleError<Hero>('deleteHero'))
+    );
+
   }
 }
